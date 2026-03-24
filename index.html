@@ -1,0 +1,2266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BillScan - AI Medical Bill Auditing</title>
+  <meta name="description" content="80% of medical bills contain errors. BillScan finds billing mistakes in 60 seconds and writes the dispute letter for you.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #ffffff;
+      color: #374151;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ========== NAVIGATION ========== */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .logo {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #111827;
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .logo span {
+      color: #2563eb;
+    }
+
+    .nav-cta {
+      background: #2563eb;
+      color: white;
+      border: 1px solid #2563eb;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .nav-cta:hover {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+    }
+
+    /* ========== HERO SECTION ========== */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 500px;
+      gap: 100px;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 140px 60px 100px;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero::before {
+      display: none;
+    }
+
+    .ambient-glow {
+      display: none;
+    }
+
+    .hero-text {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-text h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.08;
+      margin-bottom: 28px;
+      letter-spacing: -0.025em;
+      color: #111827;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .hero-text h1 span {
+      color: #2563eb;
+    }
+
+    .hero-text p {
+      font-size: 1.2rem;
+      color: #6b7280;
+      line-height: 1.7;
+      margin-bottom: 36px;
+      max-width: 520px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.15s;
+    }
+
+    .stat-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 40px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.3s;
+    }
+
+    .stat-pill {
+      display: inline-flex;
+      align-items: center;
+      color: #6b7280;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .cta-group {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.45s;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 18px 36px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .cta-secondary {
+      color: #6b7280;
+      font-size: 0.95rem;
+      text-decoration: none;
+      position: relative;
+      transition: color 0.2s ease;
+    }
+
+    .cta-secondary::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: #111827;
+      transition: width 0.25s ease;
+    }
+
+    .cta-secondary:hover {
+      color: #111827;
+    }
+
+    .cta-secondary:hover::after {
+      width: 100%;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Hero Animation */
+    .animation-container {
+      position: relative;
+      width: 100%;
+      height: 580px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+    }
+
+    .bill {
+      position: relative;
+      width: 400px;
+      background: #ffffff;
+      border-radius: 4px;
+      padding: 0;
+      border: 1px solid #d1d5db;
+      box-shadow:
+        0 25px 50px -12px rgba(0, 0, 0, 0.15),
+        0 12px 24px -8px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transform: translateY(50px) scale(0.96);
+      animation: billEnter 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.4s;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      z-index: 10;
+      font-size: 11px;
+      overflow: hidden;
+    }
+
+    @keyframes billEnter {
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .bill-top-bar {
+      background: #1e3a5f;
+      color: white;
+      padding: 8px 20px;
+      font-size: 9px;
+      display: flex;
+      justify-content: space-between;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .bill-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px 20px 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .hospital-logo {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #1e40af 0%, #1e3a5f 100%);
+      color: white;
+      font-size: 11px;
+      font-weight: 800;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 0.03em;
+      flex-shrink: 0;
+    }
+
+    .hospital-info {
+      flex: 1;
+      line-height: 1.4;
+    }
+
+    .bill-header .hospital {
+      font-size: 13px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 2px;
+    }
+
+    .hospital-address {
+      font-size: 9px;
+      color: #6b7280;
+    }
+
+    .hospital-contact {
+      font-size: 9px;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+
+    .statement-info {
+      text-align: right;
+      font-size: 9px;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+
+    .statement-info strong {
+      color: #111827;
+      font-weight: 600;
+    }
+
+    .statement-label {
+      background: #fef2f2;
+      color: #b91c1c;
+      font-size: 8px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 2px;
+      margin-bottom: 6px;
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .patient-info {
+      background: #f8fafc;
+      padding: 12px 20px;
+      border-bottom: 1px solid #e5e7eb;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 24px;
+    }
+
+    .patient-row {
+      display: flex;
+      font-size: 10px;
+    }
+
+    .patient-label {
+      color: #6b7280;
+      width: 65px;
+      flex-shrink: 0;
+    }
+
+    .patient-value {
+      color: #111827;
+      font-weight: 500;
+    }
+
+    .bill-section-header {
+      background: #f1f5f9;
+      padding: 6px 20px;
+      font-size: 9px;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .line-items-header {
+      display: grid;
+      grid-template-columns: 60px 48px 1fr 70px;
+      gap: 8px;
+      padding: 8px 20px;
+      background: #f8fafc;
+      border-bottom: 2px solid #cbd5e1;
+    }
+
+    .line-items-header span {
+      font-size: 8px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .col-amount {
+      text-align: right;
+    }
+
+    .line-items {
+      display: flex;
+      flex-direction: column;
+      padding: 0 20px;
+    }
+
+    .line-item {
+      display: grid;
+      grid-template-columns: 60px 48px 1fr 70px;
+      gap: 8px;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #f1f5f9;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .line-item:last-child {
+      border-bottom: none;
+    }
+
+    .line-item .date {
+      font-size: 9px;
+      color: #64748b;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .line-item .code {
+      font-size: 10px;
+      font-family: 'SF Mono', Monaco, 'Consolas', monospace;
+      color: #475569;
+      font-weight: 500;
+    }
+
+    .line-item .desc {
+      font-size: 10px;
+      color: #334155;
+      font-weight: 450;
+    }
+
+    .line-item .amount {
+      font-size: 11px;
+      font-weight: 600;
+      color: #111827;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      transition: all 0.3s ease;
+    }
+
+    .line-item.error {
+      background: rgba(239, 68, 68, 0.05);
+      margin: 0 -20px;
+      padding: 10px 20px;
+      border-left: 3px solid #ef4444;
+      border-bottom-color: rgba(239, 68, 68, 0.1);
+    }
+
+    .line-item.error .code {
+      color: #b91c1c;
+    }
+
+    .line-item.error .amount {
+      color: #b91c1c;
+      text-decoration: line-through;
+      text-decoration-thickness: 1.5px;
+    }
+
+    .error-tag {
+      position: absolute;
+      right: -20px;
+      top: 50%;
+      transform: translateY(-50%) translateX(calc(100% + 12px)) scale(0.8);
+      background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+      color: white;
+      font-size: 9px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 3px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+    }
+
+    .error-tag::before {
+      content: '';
+      position: absolute;
+      left: -4px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 4px solid transparent;
+      border-right-color: #dc2626;
+    }
+
+    .error-tag.show {
+      animation: tagPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes tagPop {
+      0% {
+        opacity: 0;
+        transform: translateY(-50%) translateX(calc(100% + 6px)) scale(0.6);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(-50%) translateX(calc(100% + 12px)) scale(1);
+      }
+    }
+
+    .scan-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #3b82f6;
+      top: 0;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .scan-line::before {
+      content: '';
+      position: absolute;
+      inset: -12px 0;
+      background: rgba(59, 130, 246, 0.1);
+    }
+
+    .scan-line.scanning {
+      opacity: 1;
+      animation: scan 3s ease-in-out forwards;
+    }
+
+    @keyframes scan {
+      0% { top: 0; opacity: 1; }
+      85% { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    .bill-summary {
+      background: #f8fafc;
+      padding: 12px 20px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      padding: 4px 0;
+      color: #64748b;
+    }
+
+    .summary-row.subtotal {
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 8px;
+      margin-bottom: 4px;
+    }
+
+    .summary-row span:last-child {
+      font-variant-numeric: tabular-nums;
+      color: #334155;
+    }
+
+    .bill-total {
+      background: #1e3a5f;
+      color: white;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .bill-total .label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .total-right {
+      text-align: right;
+    }
+
+    .bill-total .total-amount {
+      font-size: 20px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .bill-total .total-amount.corrected {
+      color: #6ee7b7;
+    }
+
+    .bill-total .savings {
+      font-size: 10px;
+      color: #6ee7b7;
+      font-weight: 600;
+      margin-top: 2px;
+      opacity: 0;
+      transform: translateY(5px);
+    }
+
+    .bill-total .savings.show {
+      animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .bill-footer {
+      padding: 10px 20px;
+      font-size: 8px;
+      color: #94a3b8;
+      text-align: center;
+      border-top: 1px dashed #e2e8f0;
+      background: #ffffff;
+    }
+
+    /* ========== AI DRAFTING ========== */
+    .drafting {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.95);
+      width: 320px;
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 20;
+    }
+
+    .drafting.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .drafting.shrink {
+      transform: translate(-50%, -50%) scale(0.4);
+      opacity: 0;
+      transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .drafting-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .drafting-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: iconPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes iconPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.3); }
+      50% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
+    }
+
+    .drafting-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: #2563eb;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .drafting-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .drafting-subtitle {
+      font-size: 0.7rem;
+      color: #2563eb;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .typing-dots {
+      display: flex;
+      gap: 3px;
+    }
+
+    .typing-dots span {
+      width: 4px;
+      height: 4px;
+      background: #2563eb;
+      border-radius: 50%;
+      animation: typingDot 1.4s ease-in-out infinite;
+    }
+
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typingDot {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-4px); opacity: 1; }
+    }
+
+    .drafting-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .draft-line {
+      height: 12px;
+      background: linear-gradient(90deg, #e5e7eb 0%, #f3f4f6 50%, #e5e7eb 100%);
+      background-size: 200% 100%;
+      border-radius: 6px;
+      opacity: 0;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .draft-line.show {
+      opacity: 1;
+      transform: scaleX(1);
+      animation: shimmer 1.5s ease-in-out infinite;
+    }
+
+    .draft-line.w-full { width: 100%; }
+    .draft-line.w-90 { width: 90%; }
+    .draft-line.w-75 { width: 75%; }
+    .draft-line.w-85 { width: 85%; }
+    .draft-line.w-60 { width: 60%; }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .drafting-footer {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .drafting-footer.show {
+      opacity: 1;
+    }
+
+    .drafting-status {
+      font-size: 0.75rem;
+      color: #059669;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .drafting-status svg {
+      width: 16px;
+      height: 16px;
+      stroke: #059669;
+      fill: none;
+      stroke-width: 2.5;
+    }
+
+    .drafting-amount {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    /* ========== ENVELOPE ========== */
+    .envelope {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.65);
+      width: 320px;
+      height: 320px;
+      perspective: 1000px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.15));
+      z-index: 30;
+    }
+
+    .envelope.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(0.65);
+      transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Center rectangle - the envelope face */
+    .envelope-face {
+      position: absolute;
+      top: 90px;
+      left: 60px;
+      width: 200px;
+      height: 140px;
+      background: linear-gradient(145deg, #eff6ff 0%, #dbeafe 100%);
+      border-radius: 4px;
+      z-index: 1;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Letter sits on top of face */
+    .envelope-letter {
+      position: absolute;
+      top: 100px;
+      left: 70px;
+      width: 180px;
+      height: 120px;
+      background: white;
+      border-radius: 6px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 2;
+    }
+
+    .envelope-letter .letter-line {
+      height: 10px;
+      background: linear-gradient(90deg, #e5e7eb 0%, #f3f4f6 100%);
+      border-radius: 5px;
+    }
+
+    .envelope-letter .letter-line.short {
+      width: 50%;
+    }
+
+    /* Bottom flap - folds UP */
+    .flap-bottom {
+      position: absolute;
+      top: 230px;
+      left: 60px;
+      width: 200px;
+      height: 80px;
+      transform-origin: top center;
+      transform-style: preserve-3d;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 3;
+    }
+
+    .flap-bottom-inner {
+      width: 0;
+      height: 0;
+      border-left: 100px solid transparent;
+      border-right: 100px solid transparent;
+      border-top: 80px solid #93c5fd;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    /* Left flap */
+    .flap-left {
+      position: absolute;
+      top: 90px;
+      left: -40px;
+      width: 100px;
+      height: 140px;
+      transform-origin: right center;
+      transform-style: preserve-3d;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 4;
+    }
+
+    .flap-left-inner {
+      position: absolute;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-top: 70px solid transparent;
+      border-bottom: 70px solid transparent;
+      border-right: 100px solid #bfdbfe;
+      filter: drop-shadow(2px 0 4px rgba(0, 0, 0, 0.08));
+    }
+
+    /* Right flap */
+    .flap-right {
+      position: absolute;
+      top: 90px;
+      right: -40px;
+      width: 100px;
+      height: 140px;
+      transform-origin: left center;
+      transform-style: preserve-3d;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 4;
+    }
+
+    .flap-right-inner {
+      position: absolute;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-top: 70px solid transparent;
+      border-bottom: 70px solid transparent;
+      border-left: 100px solid #a5d8ff;
+      filter: drop-shadow(-2px 0 4px rgba(0, 0, 0, 0.08));
+    }
+
+    /* Top flap - folds DOWN to seal */
+    .flap-top {
+      position: absolute;
+      top: 0px;
+      left: 60px;
+      width: 200px;
+      height: 90px;
+      transform-origin: bottom center;
+      transform-style: preserve-3d;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 5;
+    }
+
+    .flap-top-inner {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 100px solid transparent;
+      border-right: 100px solid transparent;
+      border-bottom: 90px solid #2563eb;
+      filter: drop-shadow(0 -2px 6px rgba(37, 99, 235, 0.3));
+    }
+
+    /* Fold states */
+    .envelope.fold-bottom .flap-bottom {
+      transform: rotateX(-180deg);
+      z-index: 6;
+    }
+
+    .envelope.fold-sides .flap-left {
+      transform: rotateY(180deg);
+      z-index: 7;
+    }
+
+    .envelope.fold-sides .flap-right {
+      transform: rotateY(-180deg);
+      z-index: 7;
+    }
+
+    .envelope.fold-top .flap-top {
+      transform: rotateX(180deg);
+      z-index: 10;
+    }
+
+    /* Send animation */
+    .envelope.send {
+      animation: flyAway 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes flyAway {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.65) rotate(0deg);
+      }
+      20% {
+        opacity: 1;
+        transform: translate(-50%, -55%) scale(0.68) rotate(-2deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(60%, -180%) scale(0.2) rotate(25deg);
+      }
+    }
+
+    /* Savings result */
+    .savings-result {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 40;
+    }
+
+    .savings-result.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .savings-badge {
+      background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+      border: 2px solid #86efac;
+      border-radius: 50px;
+      padding: 8px 20px;
+      margin-bottom: 16px;
+      opacity: 0;
+      transform: translateY(10px) scale(0.9);
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .savings-result.show .savings-badge {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .savings-badge-text {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #059669;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .savings-badge-text svg {
+      width: 14px;
+      height: 14px;
+      stroke: #059669;
+      stroke-width: 2.5;
+      fill: none;
+    }
+
+    .savings-amount {
+      font-size: 4.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      opacity: 0;
+      transform: translateY(15px) scale(0.9);
+      transition: opacity 0.5s ease 0.15s, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s;
+      filter: drop-shadow(0 4px 12px rgba(5, 150, 105, 0.2));
+    }
+
+    .savings-result.show .savings-amount {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .savings-label {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #374151;
+      margin-top: 8px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease 0.3s, transform 0.4s ease 0.3s;
+    }
+
+    .savings-result.show .savings-label {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .savings-subtext {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-top: 6px;
+      opacity: 0;
+      transition: opacity 0.4s ease 0.4s;
+    }
+
+    .savings-result.show .savings-subtext {
+      opacity: 1;
+    }
+
+    /* Glow effect on animation container */
+    .animation-container {
+      transition: filter 0.6s ease, box-shadow 0.6s ease;
+      border-radius: 20px;
+    }
+
+    .animation-container.glow {
+      filter: drop-shadow(0 0 30px rgba(5, 150, 105, 0.25));
+    }
+
+    .animation-container.glow::before {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      background: radial-gradient(circle at center, rgba(5, 150, 105, 0.12) 0%, transparent 70%);
+      border-radius: 30px;
+      z-index: -1;
+      animation: glowPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.02); }
+    }
+
+    /* ========== SECTION STYLES ========== */
+    section {
+      padding: 120px 60px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #2563eb;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      font-size: 1.15rem;
+      color: #6b7280;
+      max-width: 600px;
+      line-height: 1.7;
+    }
+
+    /* ========== PROBLEM SECTION ========== */
+    .problem-section {
+      background: #f9fafb;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      margin-top: 60px;
+      align-items: center;
+    }
+
+    .problem-content p {
+      font-size: 1.1rem;
+      color: #4b5563;
+      margin-bottom: 24px;
+      line-height: 1.8;
+    }
+
+    .problem-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .stat-block {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 28px 32px;
+    }
+
+    .stat-block .number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #111827;
+      margin-bottom: 8px;
+    }
+
+    .stat-block .number.red {
+      color: #dc2626;
+    }
+
+    .stat-block .text {
+      font-size: 1rem;
+      color: #6b7280;
+    }
+
+    .stat-block .source {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-top: 8px;
+    }
+
+    /* ========== HOW IT WORKS ========== */
+    .how-section {
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .steps {
+      margin-top: 60px;
+      display: grid;
+      gap: 0;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 40px;
+      padding: 40px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .step:last-child {
+      border-bottom: none;
+    }
+
+    .step-number {
+      width: 56px;
+      height: 56px;
+      background: #eff6ff;
+      border: 1px solid #dbeafe;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #2563eb;
+    }
+
+    .step-content h3 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 12px;
+    }
+
+    .step-content p {
+      font-size: 1.05rem;
+      color: #6b7280;
+      line-height: 1.7;
+      max-width: 600px;
+    }
+
+    /* ========== TRUST SECTION ========== */
+    .trust-section {
+      background: #f9fafb;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .trust-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 60px;
+    }
+
+    .trust-card {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 36px;
+    }
+
+    .trust-card h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .trust-card h3 svg {
+      width: 24px;
+      height: 24px;
+      stroke: #2563eb;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    .trust-card p {
+      font-size: 1rem;
+      color: #6b7280;
+      line-height: 1.7;
+    }
+
+    /* ========== FAQ SECTION ========== */
+    .faq-section {
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .faq-list {
+      margin-top: 60px;
+      max-width: 800px;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 32px 0;
+    }
+
+    .faq-item:first-child {
+      padding-top: 0;
+    }
+
+    .faq-item h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 12px;
+    }
+
+    .faq-item p {
+      font-size: 1rem;
+      color: #6b7280;
+      line-height: 1.7;
+    }
+
+    /* ========== CTA SECTION ========== */
+    .cta-section {
+      border-top: 1px solid #e5e7eb;
+      text-align: center;
+      padding: 140px 60px;
+      background: #f9fafb;
+    }
+
+    .cta-section .section-title {
+      font-size: 2.8rem;
+      max-width: 700px;
+      margin: 0 auto 20px;
+    }
+
+    .cta-section .section-subtitle {
+      max-width: 500px;
+      margin: 0 auto 48px;
+    }
+
+    .waitlist-form {
+      display: flex;
+      gap: 12px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .waitlist-form input {
+      flex: 1;
+      padding: 18px 24px;
+      font-size: 1rem;
+      font-family: inherit;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #111827;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .waitlist-form input::placeholder {
+      color: #9ca3af;
+    }
+
+    .waitlist-form input:focus {
+      border-color: #2563eb;
+      background: #ffffff;
+    }
+
+    .waitlist-form button {
+      padding: 18px 32px;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .form-note {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-top: 16px;
+    }
+
+    /* ========== FOOTER ========== */
+    .footer {
+      border-top: 1px solid #e5e7eb;
+      padding: 40px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .footer .logo {
+      font-size: 1.1rem;
+    }
+
+    .footer-copyright {
+      font-size: 0.9rem;
+      color: #9ca3af;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-size: 0.9rem;
+      color: #6b7280;
+      text-decoration: none;
+      position: relative;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: #111827;
+      transition: width 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: #111827;
+    }
+
+    .footer-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 1100px) {
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 80px;
+        text-align: center;
+        padding: 120px 40px 80px;
+      }
+
+      .hero-text p {
+        max-width: 100%;
+      }
+
+      .stat-row {
+        justify-content: center;
+      }
+
+      .cta-group {
+        justify-content: center;
+      }
+
+      .animation-container {
+        transform: scale(0.85);
+      }
+
+      .error-tag {
+        display: none;
+      }
+
+      .problem-grid,
+      .trust-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      section {
+        padding: 80px 40px;
+      }
+
+      .nav {
+        padding: 16px 24px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero-text h1 {
+        font-size: 2.2rem;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+      }
+
+      .step {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .waitlist-form {
+        flex-direction: column;
+      }
+
+      .footer {
+        flex-direction: column;
+        gap: 24px;
+        text-align: center;
+      }
+
+      .footer-left {
+        flex-direction: column;
+        gap: 16px;
+      }
+    }
+
+    /* ========== SCROLL REVEAL ANIMATIONS ========== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Staggered children - items appear one after another */
+    .stagger-children .reveal {
+      transition-delay: calc(var(--index, 0) * 0.1s);
+    }
+
+    /* Card hover effects */
+    .trust-card {
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .trust-card:hover {
+      transform: translateY(-4px);
+      border-color: #d1d5db;
+      box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-block {
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .stat-block:hover {
+      transform: translateY(-4px);
+      border-color: #d1d5db;
+      box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Step hover effect */
+    .step {
+      transition: background 0.25s ease;
+      margin: 0 -20px;
+      padding-left: 20px;
+      padding-right: 20px;
+      border-radius: 12px;
+    }
+
+    .step:hover {
+      background: #f3f4f6;
+    }
+
+    .step-number {
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .step:hover .step-number {
+      transform: scale(1.08);
+      background: #dbeafe;
+    }
+
+    /* FAQ accordion-style interaction */
+    .faq-item {
+      transition: background 0.2s ease;
+      margin: 0 -20px;
+      padding-left: 20px;
+      padding-right: 20px;
+      border-radius: 8px;
+    }
+
+    .faq-item:hover {
+      background: #f3f4f6;
+    }
+
+    /* Input focus animation */
+    .waitlist-form input {
+      transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .waitlist-form input:focus {
+      border-color: #2563eb;
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+
+    /* Bill card - no floating animation to avoid conflicts */
+    .bill.fade-out {
+      opacity: 0 !important;
+      transform: scale(0.9) translateY(-20px) !important;
+      pointer-events: none;
+    }
+
+    /* Section label line */
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: #2563eb;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="#" class="logo">BillScan<span>_</span></a>
+    <a href="#waitlist" class="nav-cta">Join Waitlist</a>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="ambient-glow"></div>
+
+    <div class="hero-text">
+      <h1>Your medical bill probably has errors. <span>Find them in 60 seconds.</span></h1>
+      <p>80% of medical bills contain mistakes. BillScan uses AI to spot billing errors, duplicate charges, and upcoding, then writes the dispute letter for you.</p>
+      <div class="stat-row">
+        <div class="stat-pill">$210B+ lost to billing errors annually</div>
+      </div>
+      <div class="cta-group">
+        <a href="#waitlist" class="btn-primary">Join the Waitlist</a>
+        <a href="#how-it-works" class="cta-secondary">See how it works</a>
+      </div>
+    </div>
+
+    <div class="animation-container">
+      <div class="bill" id="bill">
+        <div class="scan-line" id="scanLine"></div>
+
+        <div class="bill-top-bar">
+          <span>Patient Statement</span>
+          <span>Page 1 of 1</span>
+        </div>
+
+        <div class="bill-header">
+          <div class="hospital-logo">MGH</div>
+          <div class="hospital-info">
+            <div class="hospital">Metro General Hospital</div>
+            <div class="hospital-address">1200 Medical Center Drive</div>
+            <div class="hospital-address">Boston, MA 02114</div>
+            <div class="hospital-contact">Tel: (617) 555-0100 | Fax: (617) 555-0101</div>
+          </div>
+          <div class="statement-info">
+            <div class="statement-label">Amount Due</div>
+            <div><strong>Statement Date:</strong> 02/28/2024</div>
+            <div><strong>Account #:</strong> 847-291-003</div>
+            <div><strong>Due Date:</strong> 03/29/2024</div>
+          </div>
+        </div>
+
+        <div class="patient-info">
+          <div class="patient-row">
+            <span class="patient-label">Patient:</span>
+            <span class="patient-value">John M. Smith</span>
+          </div>
+          <div class="patient-row">
+            <span class="patient-label">DOB:</span>
+            <span class="patient-value">05/12/1985</span>
+          </div>
+          <div class="patient-row">
+            <span class="patient-label">MRN:</span>
+            <span class="patient-value">MRN-4829103</span>
+          </div>
+          <div class="patient-row">
+            <span class="patient-label">Insurance:</span>
+            <span class="patient-value">Blue Cross PPO</span>
+          </div>
+        </div>
+
+        <div class="bill-section-header">Service Details</div>
+
+        <div class="line-items-header">
+          <span class="col-date">Date</span>
+          <span class="col-code">CPT</span>
+          <span class="col-desc">Description</span>
+          <span class="col-amount">Charge</span>
+        </div>
+
+        <div class="line-items" id="lineItems">
+          <div class="line-item" data-error="false">
+            <span class="date">02/14/24</span>
+            <span class="code">99284</span>
+            <span class="desc">ED Visit Level 4</span>
+            <span class="amount">$1,250.00</span>
+          </div>
+
+          <div class="line-item" data-error="true">
+            <span class="date">02/14/24</span>
+            <span class="code">96360</span>
+            <span class="desc">IV Infusion, Initial</span>
+            <span class="amount">$485.00</span>
+            <span class="error-tag">Duplicate</span>
+          </div>
+
+          <div class="line-item" data-error="false">
+            <span class="date">02/14/24</span>
+            <span class="code">80053</span>
+            <span class="desc">Comprehensive Metabolic Panel</span>
+            <span class="amount">$320.00</span>
+          </div>
+
+          <div class="line-item" data-error="true">
+            <span class="date">02/14/24</span>
+            <span class="code">74177</span>
+            <span class="desc">CT Abd/Pelvis w/Contrast</span>
+            <span class="amount">$2,100.00</span>
+            <span class="error-tag">Upcoded</span>
+          </div>
+
+          <div class="line-item" data-error="false">
+            <span class="date">02/14/24</span>
+            <span class="code">99283</span>
+            <span class="desc">Physician Fee - Emergency</span>
+            <span class="amount">$475.00</span>
+          </div>
+
+          <div class="line-item" data-error="true">
+            <span class="date">02/14/24</span>
+            <span class="code">99070</span>
+            <span class="desc">Supplies & Materials</span>
+            <span class="amount">$245.00</span>
+            <span class="error-tag">Unbundled</span>
+          </div>
+        </div>
+
+        <div class="bill-summary">
+          <div class="summary-row subtotal">
+            <span>Subtotal</span>
+            <span>$4,875.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Insurance Adjustment</span>
+            <span>-$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Insurance Paid</span>
+            <span>-$0.00</span>
+          </div>
+        </div>
+
+        <div class="bill-total">
+          <span class="label">Patient Responsibility</span>
+          <div class="total-right">
+            <div class="total-amount" id="totalAmount">$4,875.00</div>
+            <div class="savings" id="savings">Corrected: $3,035.00</div>
+          </div>
+        </div>
+
+        <div class="bill-footer">
+          Questions? Call (617) 555-0100 or visit myMGHchart.org | Tax ID: 04-2345678
+        </div>
+
+      </div>
+
+      <!-- AI Drafting -->
+      <div class="drafting" id="drafting">
+        <div class="drafting-header">
+          <div class="drafting-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/></svg>
+          </div>
+          <div>
+            <div class="drafting-title">Drafting Dispute Letter</div>
+            <div class="drafting-subtitle">
+              AI generating
+              <div class="typing-dots">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="drafting-lines">
+          <div class="draft-line w-full"></div>
+          <div class="draft-line w-90"></div>
+          <div class="draft-line w-75"></div>
+          <div class="draft-line w-85"></div>
+          <div class="draft-line w-60"></div>
+        </div>
+        <div class="drafting-footer" id="draftingFooter">
+          <div class="drafting-status">
+            <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Ready to send
+          </div>
+          <div class="drafting-amount">-$1,840</div>
+        </div>
+      </div>
+
+      <!-- Envelope animation -->
+      <div class="envelope" id="envelope">
+        <div class="envelope-face"></div>
+        <div class="envelope-letter">
+          <div class="letter-line"></div>
+          <div class="letter-line"></div>
+          <div class="letter-line short"></div>
+        </div>
+        <div class="flap-bottom"><div class="flap-bottom-inner"></div></div>
+        <div class="flap-left"><div class="flap-left-inner"></div></div>
+        <div class="flap-right"><div class="flap-right-inner"></div></div>
+        <div class="flap-top"><div class="flap-top-inner"></div></div>
+      </div>
+
+      <!-- Savings result -->
+      <div class="savings-result" id="savingsResult">
+        <div class="savings-badge">
+          <div class="savings-badge-text">
+            <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Dispute Ready
+          </div>
+        </div>
+        <div class="savings-amount">$1,840</div>
+        <div class="savings-label">potential savings</div>
+        <div class="savings-subtext">Letter ready to send</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Problem Section -->
+  <section class="problem-section">
+    <div class="section-label">The Problem</div>
+    <h2 class="section-title">Medical billing is broken. You're paying the price.</h2>
+    <p class="section-subtitle">Hospitals and insurers use billing codes that no regular person can understand. Mistakes happen constantly, and they almost always favor the provider.</p>
+
+    <div class="problem-grid">
+      <div class="problem-content">
+        <p>Upcoding. Duplicate charges. Unbundled procedures. These aren't rare glitches. They're standard operating procedure in an industry where complexity benefits the biller.</p>
+        <p>Most people pay whatever the bill says because disputing feels impossible. You'd need to understand CPT codes, know the correct pricing, and write a formal dispute letter. Who has time for that?</p>
+        <p>That's exactly why these errors persist. The system counts on you giving up.</p>
+      </div>
+      <div class="problem-stats">
+        <div class="stat-block">
+          <div class="number red">80%</div>
+          <div class="text">of medical bills contain at least one error</div>
+          <div class="source">MSNBC / NerdWallet</div>
+        </div>
+        <div class="stat-block">
+          <div class="number">$210B+</div>
+          <div class="text">wasted annually on billing errors in the U.S.</div>
+          <div class="source">Healthcare Financial Management Association</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-section" id="how-it-works">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">Three steps. No expertise required.</h2>
+    <p class="section-subtitle">BillScan handles the analysis so you can skip the learning curve and go straight to disputing.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3>Upload your bill</h3>
+          <p>Take a photo or upload a PDF of your medical bill and EOB. BillScan extracts every line item, code, and charge automatically. Your documents are encrypted and never shared with third parties.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3>Get your audit report</h3>
+          <p>Within 60 seconds, BillScan flags potential errors: duplicate charges, upcoded procedures, unbundled services, and charges that don't match your EOB. Each flag includes an explanation in plain English.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3>Send your dispute letter</h3>
+          <p>BillScan generates a formal dispute letter citing the specific errors and relevant billing codes. Download it, customize if needed, and send it to your provider or insurer. We tell you exactly where to send it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Section -->
+  <section class="trust-section">
+    <div class="section-label">Security</div>
+    <h2 class="section-title">Your data stays yours.</h2>
+    <p class="section-subtitle">Medical bills contain sensitive information. We treat your privacy as non-negotiable.</p>
+
+    <div class="trust-grid">
+      <div class="trust-card">
+        <h3>
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          End-to-end encryption
+        </h3>
+        <p>Your bills are encrypted in transit and at rest using AES-256. We cannot read your documents, and neither can anyone else.</p>
+      </div>
+
+      <div class="trust-card">
+        <h3>
+          <svg viewBox="0 0 24 24"><path d="M3 6l9-4 9 4v6c0 5.5-3.8 10.7-9 12-5.2-1.3-9-6.5-9-12V6z"/></svg>
+          No data selling
+        </h3>
+        <p>We will never sell, share, or monetize your medical or financial data. Our business model is the product, not your information.</p>
+      </div>
+
+      <div class="trust-card">
+        <h3>
+          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+          Auto-delete option
+        </h3>
+        <p>Choose to have your uploaded documents automatically deleted after processing. You keep the audit report; we keep nothing.</p>
+      </div>
+
+      <div class="trust-card">
+        <h3>
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          No bank access needed
+        </h3>
+        <p>Unlike subscription trackers, BillScan never asks for your bank login or financial accounts. You upload only what you want us to see.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title">Common questions</h2>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <h3>How accurate is BillScan?</h3>
+        <p>BillScan uses pattern matching and rate comparison against industry databases to flag likely errors. It's not a replacement for a professional medical billing advocate, but it catches the most common issues that cost people money. We show you exactly why each item was flagged so you can make your own judgment.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>What types of errors can BillScan detect?</h3>
+        <p>Duplicate charges, upcoding (billing for a more expensive procedure than performed), unbundling (charging separately for items that should be grouped), mismatched EOB amounts, and charges for services not documented in your records.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Will disputing actually work?</h3>
+        <p>It depends on the error. Clear-cut mistakes like duplicate charges are usually corrected quickly. Upcoding disputes may require more back-and-forth. Either way, BillScan gives you a legitimate, documented starting point. Many billing departments resolve disputes simply because someone took the time to ask.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Is my data safe?</h3>
+        <p>Yes. All uploads are encrypted with AES-256. We do not sell or share your data with any third party. You can delete your documents immediately after receiving your report, and we offer automatic deletion for users who prefer it.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>How is this different from Rocket Money or GoodRx?</h3>
+        <p>Rocket Money tracks subscriptions and requires access to your bank account. GoodRx helps you find cheaper prescriptions. BillScan audits medical bills you've already received. We don't need your bank login, and we focus specifically on finding billing errors, not cutting costs elsewhere.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>What does it cost?</h3>
+        <p>Pricing will be announced at launch. Early waitlist members will get a significant discount. We're building this to be accessible to anyone who gets a confusing medical bill, which is most people.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section" id="waitlist">
+    <div class="section-label">Early Access</div>
+    <h2 class="section-title">Stop overpaying. Start disputing.</h2>
+    <p class="section-subtitle">Join the waitlist for early access and a launch discount. No spam, just one email when we're ready.</p>
+
+    <form class="waitlist-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <input type="email" name="email" placeholder="you@example.com" required>
+      <button type="submit" class="btn-primary">Join Waitlist</button>
+    </form>
+    <p class="form-note">Your email is only used for launch updates. No spam.</p>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-left">
+      <a href="#" class="logo">BillScan<span>_</span></a>
+      <span class="footer-copyright">2024 BillScan. All rights reserved.</span>
+    </div>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="mailto:hello@billscan.com">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    const scanLine = document.getElementById('scanLine');
+    const bill = document.getElementById('bill');
+    const totalAmount = document.getElementById('totalAmount');
+    const savings = document.getElementById('savings');
+    const drafting = document.getElementById('drafting');
+    const envelope = document.getElementById('envelope');
+    const savingsResult = document.getElementById('savingsResult');
+    const animationContainer = document.querySelector('.animation-container');
+
+    const errorItems = document.querySelectorAll('.line-item[data-error="true"]');
+    const draftLines = document.querySelectorAll('.draft-line');
+    const draftingFooter = document.getElementById('draftingFooter');
+
+    function runAnimation() {
+      // Reset bill state
+      bill.classList.remove('fade-out');
+      document.querySelectorAll('.line-item').forEach(item => {
+        item.classList.remove('error');
+      });
+      document.querySelectorAll('.error-tag').forEach(tag => {
+        tag.classList.remove('show');
+      });
+      totalAmount.classList.remove('corrected');
+      totalAmount.textContent = '$4,875.00';
+      savings.classList.remove('show');
+
+      // Reset drafting
+      drafting.classList.remove('show', 'shrink');
+      draftLines.forEach(line => line.classList.remove('show'));
+      draftingFooter.classList.remove('show');
+
+      // Reset envelope
+      envelope.classList.remove('show', 'fold-bottom', 'fold-sides', 'fold-top', 'send');
+      envelope.style.animation = 'none';
+      envelope.offsetHeight;
+      envelope.style.animation = '';
+
+      // Reset savings result and glow
+      savingsResult.classList.remove('show');
+      animationContainer.classList.remove('glow');
+
+      bill.style.animation = 'none';
+      bill.offsetHeight;
+      bill.style.animation = 'billEnter 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.4s';
+
+      scanLine.classList.remove('scanning');
+      scanLine.offsetHeight;
+
+      setTimeout(() => {
+        scanLine.classList.add('scanning');
+        watchScanPosition();
+      }, 1400);
+    }
+
+    function watchScanPosition() {
+      const scanDuration = 3000;
+      const startTime = performance.now();
+      const billRect = bill.getBoundingClientRect();
+      const billHeight = billRect.height;
+
+      function checkPositions(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / scanDuration, 1);
+        const scanY = progress * billHeight;
+
+        errorItems.forEach(item => {
+          const itemRect = item.getBoundingClientRect();
+          const itemTop = itemRect.top - billRect.top;
+          const itemCenter = itemTop + (itemRect.height / 2);
+
+          if (scanY >= itemCenter && !item.classList.contains('error')) {
+            item.classList.add('error');
+            const tag = item.querySelector('.error-tag');
+            if (tag) {
+              setTimeout(() => tag.classList.add('show'), 50);
+            }
+          }
+        });
+
+        if (progress < 1) {
+          requestAnimationFrame(checkPositions);
+        } else {
+          // Show corrected total
+          setTimeout(() => {
+            totalAmount.textContent = '$3,035.00';
+            totalAmount.classList.add('corrected');
+            savings.classList.add('show');
+          }, 200);
+
+          // Fade out bill
+          setTimeout(() => {
+            bill.classList.add('fade-out');
+          }, 1200);
+
+          // Show drafting
+          setTimeout(() => {
+            drafting.classList.add('show');
+          }, 1700);
+
+          // Animate draft lines one by one (pulsing shimmer effect)
+          setTimeout(() => { draftLines[0].classList.add('show'); }, 1950);
+          setTimeout(() => { draftLines[1].classList.add('show'); }, 2100);
+          setTimeout(() => { draftLines[2].classList.add('show'); }, 2250);
+          setTimeout(() => { draftLines[3].classList.add('show'); }, 2400);
+          setTimeout(() => { draftLines[4].classList.add('show'); }, 2550);
+
+          // Show footer with ready status
+          setTimeout(() => {
+            draftingFooter.classList.add('show');
+          }, 2900);
+
+          // Shrink drafting
+          setTimeout(() => {
+            drafting.classList.add('shrink');
+          }, 3500);
+
+          // Show envelope (flat template with letter)
+          setTimeout(() => {
+            envelope.classList.add('show');
+          }, 3800);
+
+          // Fold bottom up
+          setTimeout(() => {
+            envelope.classList.add('fold-bottom');
+          }, 4150);
+
+          // Fold sides in
+          setTimeout(() => {
+            envelope.classList.add('fold-sides');
+          }, 4450);
+
+          // Fold top down (seal)
+          setTimeout(() => {
+            envelope.classList.add('fold-top');
+          }, 4750);
+
+          // Send envelope flying
+          setTimeout(() => {
+            envelope.classList.add('send');
+          }, 5150);
+
+          // Show savings result with glow
+          setTimeout(() => {
+            animationContainer.classList.add('glow');
+            savingsResult.classList.add('show');
+          }, 5700);
+
+          // Reset and loop
+          setTimeout(() => {
+            runAnimation();
+          }, 8800);
+        }
+      }
+
+      requestAnimationFrame(checkPositions);
+    }
+
+    // Run on load
+    runAnimation();
+
+    // Scroll reveal animations
+    function setupScrollReveal() {
+      // Add reveal class to elements
+      const revealSelectors = [
+        '.section-label',
+        '.section-title',
+        '.section-subtitle',
+        '.problem-content p',
+        '.stat-block',
+        '.step',
+        '.trust-card',
+        '.faq-item',
+        '.waitlist-form',
+        '.form-note'
+      ];
+
+      revealSelectors.forEach(selector => {
+        document.querySelectorAll(selector).forEach((el, index) => {
+          el.classList.add('reveal');
+          el.style.setProperty('--index', index);
+        });
+      });
+
+      // Mark parent containers for stagger
+      document.querySelectorAll('.problem-stats, .steps, .trust-grid, .faq-list').forEach(el => {
+        el.classList.add('stagger-children');
+      });
+
+      // Intersection Observer for reveal
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      });
+
+      document.querySelectorAll('.reveal').forEach(el => {
+        observer.observe(el);
+      });
+    }
+
+    // Run after DOM is ready
+    setupScrollReveal();
+
+    // Number counting animation for stats
+    function animateNumber(element, target, duration = 1500) {
+      const start = 0;
+      const startTime = performance.now();
+      const isPercentage = target.toString().includes('%');
+      const isCurrency = target.toString().includes('$');
+      const numericValue = parseFloat(target.replace(/[^0-9.]/g, ''));
+      const suffix = target.replace(/[0-9.$,]/g, '');
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Easing function (ease-out)
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(numericValue * easeOut);
+
+        let display = current.toString();
+        if (isCurrency) display = '$' + current;
+        display += suffix;
+
+        element.textContent = display;
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          element.textContent = target;
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    // Setup stat animation
+    const statNumbers = document.querySelectorAll('.stat-block .number');
+    const statObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.dataset.animated) {
+          entry.target.dataset.animated = 'true';
+          const target = entry.target.textContent;
+          entry.target.textContent = '0';
+          setTimeout(() => animateNumber(entry.target, target), 200);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    statNumbers.forEach(stat => statObserver.observe(stat));
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          const offset = 100;
+          const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
