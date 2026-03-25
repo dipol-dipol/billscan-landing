@@ -34,7 +34,7 @@
       margin-bottom: 24px;
       opacity: 0;
       transform: translateY(10px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
 
     .label.show {
@@ -77,13 +77,28 @@
     }
 
     .suffix {
-      font-size: 100px;
-      margin-left: 4px;
+      font-size: 140px;
+      font-weight: 800;
+      margin-left: 16px;
       opacity: 0;
-      transition: opacity 0.4s ease;
+      transform: translateX(-20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
 
     .suffix.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .plus {
+      font-size: 100px;
+      font-weight: 800;
+      margin-left: 8px;
+      opacity: 0;
+      transition: opacity 0.4s ease 0.2s;
+    }
+
+    .plus.show {
       opacity: 1;
     }
 
@@ -92,7 +107,8 @@
     }
 
     .counter.final .dollar,
-    .counter.final .suffix {
+    .counter.final .suffix,
+    .counter.final .plus {
       color: #dc2626;
     }
 
@@ -103,7 +119,7 @@
       margin-top: 32px;
       opacity: 0;
       transform: translateY(10px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
 
     .subtext.show {
@@ -146,7 +162,8 @@
         <div class="digit">0</div>
       </div>
     </div>
-    <span class="suffix" id="suffix">B+</span>
+    <span class="suffix" id="suffix">billion</span>
+    <span class="plus" id="plus">+</span>
   </div>
 
   <div class="subtext" id="subtext">in the United States alone</div>
@@ -157,6 +174,7 @@
     const counter = document.getElementById('counter');
     const label = document.getElementById('label');
     const suffix = document.getElementById('suffix');
+    const plus = document.getElementById('plus');
     const subtext = document.getElementById('subtext');
     const replayHint = document.getElementById('replayHint');
     const d1 = document.getElementById('d1');
@@ -178,6 +196,7 @@
       counter.classList.remove('final');
       label.classList.remove('show');
       suffix.classList.remove('show');
+      plus.classList.remove('show');
       subtext.classList.remove('show');
       replayHint.classList.remove('show');
 
@@ -201,40 +220,39 @@
       const duration = 2000;
       const digitHeight = 160;
 
-      // Show label first
-      label.classList.add('show');
+      const d1Final = (5 * 10 + 2) * digitHeight;
+      const d2Final = (4 * 10 + 1) * digitHeight;
+      const d3Final = (3 * 10 + 0) * digitHeight;
 
-      // Start spinning after label appears
+      d1.style.transition = `transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1)`;
+      d2.style.transition = `transform ${duration - 150}ms cubic-bezier(0.16, 1, 0.3, 1)`;
+      d3.style.transition = `transform ${duration - 300}ms cubic-bezier(0.16, 1, 0.3, 1)`;
+
+      d1.style.transform = `translateY(-${d1Final}px)`;
+      d2.style.transform = `translateY(-${d2Final}px)`;
+      d3.style.transform = `translateY(-${d3Final}px)`;
+
+      // Turn red and show suffix on complete
       setTimeout(() => {
-        const d1Final = (5 * 10 + 2) * digitHeight;
-        const d2Final = (4 * 10 + 1) * digitHeight;
-        const d3Final = (3 * 10 + 0) * digitHeight;
+        counter.classList.add('final');
+        suffix.classList.add('show');
+        plus.classList.add('show');
+      }, duration);
 
-        d1.style.transition = `transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1)`;
-        d2.style.transition = `transform ${duration - 150}ms cubic-bezier(0.16, 1, 0.3, 1)`;
-        d3.style.transition = `transform ${duration - 300}ms cubic-bezier(0.16, 1, 0.3, 1)`;
+      // Show label
+      setTimeout(() => {
+        label.classList.add('show');
+      }, duration + 400);
 
-        d1.style.transform = `translateY(-${d1Final}px)`;
-        d2.style.transform = `translateY(-${d2Final}px)`;
-        d3.style.transform = `translateY(-${d3Final}px)`;
+      // Show subtext
+      setTimeout(() => {
+        subtext.classList.add('show');
+      }, duration + 600);
 
-        // Show suffix and turn red on complete
-        setTimeout(() => {
-          counter.classList.add('final');
-          suffix.classList.add('show');
-        }, duration);
-
-        // Show subtext
-        setTimeout(() => {
-          subtext.classList.add('show');
-        }, duration + 400);
-
-        // Show replay hint
-        setTimeout(() => {
-          replayHint.classList.add('show');
-        }, duration + 1500);
-
-      }, 600);
+      // Show replay hint
+      setTimeout(() => {
+        replayHint.classList.add('show');
+      }, duration + 1500);
     }
 
     setTimeout(resetAnimation, 300);
