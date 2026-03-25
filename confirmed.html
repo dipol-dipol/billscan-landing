@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>You're on the list! - BillScan</title>
+  <meta name="description" content="Welcome to the BillScan waitlist. We'll notify you when we launch.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #ffffff;
+      color: #374151;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navigation */
+    .nav {
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .logo {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #111827;
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .logo span {
+      color: #2563eb;
+    }
+
+    /* Main Content */
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 40px;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 600px;
+    }
+
+    /* Animation Container */
+    .animation-container {
+      width: 320px;
+      height: 320px;
+      margin: 0 auto 48px;
+      position: relative;
+    }
+
+    /* Envelope */
+    .envelope {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      width: 240px;
+      height: 160px;
+      perspective: 1000px;
+    }
+
+    /* Envelope body */
+    .envelope-body {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      background: linear-gradient(145deg, #eff6ff 0%, #dbeafe 100%);
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 10px 40px rgba(37, 99, 235, 0.15);
+      z-index: 2;
+    }
+
+    /* Top flap */
+    .envelope-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      transform-origin: top center;
+      transform-style: preserve-3d;
+      z-index: 3;
+      animation: flapOpen 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 1s;
+    }
+
+    .envelope-flap-inner {
+      width: 0;
+      height: 0;
+      border-left: 120px solid transparent;
+      border-right: 120px solid transparent;
+      border-top: 100px solid #2563eb;
+      filter: drop-shadow(0 4px 8px rgba(37, 99, 235, 0.2));
+    }
+
+    @keyframes flapOpen {
+      0% { transform: rotateX(0deg); }
+      100% { transform: rotateX(180deg); }
+    }
+
+    /* Letter */
+    .letter {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 200px;
+      height: 140px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      z-index: 1;
+      opacity: 0;
+      animation: letterRise 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 1.4s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    @keyframes letterRise {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -30%);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(-50%, -80%);
+      }
+    }
+
+    .letter-check {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .letter-check svg {
+      width: 28px;
+      height: 28px;
+      stroke: #059669;
+      stroke-width: 3;
+      fill: none;
+      stroke-dasharray: 30;
+      stroke-dashoffset: 30;
+      animation: checkDraw 0.5s ease forwards 2s;
+    }
+
+    @keyframes checkDraw {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .letter-text {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #111827;
+      text-align: center;
+    }
+
+    /* Confetti */
+    .confetti-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      opacity: 0;
+    }
+
+    .confetti:nth-child(1) { left: 10%; background: #2563eb; animation: confettiFall 1.5s ease forwards 2.2s; }
+    .confetti:nth-child(2) { left: 20%; background: #059669; border-radius: 50%; animation: confettiFall 1.8s ease forwards 2.3s; }
+    .confetti:nth-child(3) { left: 30%; background: #f59e0b; animation: confettiFall 1.4s ease forwards 2.1s; }
+    .confetti:nth-child(4) { left: 40%; background: #ef4444; border-radius: 50%; animation: confettiFall 1.6s ease forwards 2.4s; }
+    .confetti:nth-child(5) { left: 50%; background: #8b5cf6; animation: confettiFall 1.5s ease forwards 2.2s; }
+    .confetti:nth-child(6) { left: 60%; background: #2563eb; border-radius: 50%; animation: confettiFall 1.7s ease forwards 2.5s; }
+    .confetti:nth-child(7) { left: 70%; background: #059669; animation: confettiFall 1.4s ease forwards 2.3s; }
+    .confetti:nth-child(8) { left: 80%; background: #f59e0b; border-radius: 50%; animation: confettiFall 1.6s ease forwards 2.1s; }
+    .confetti:nth-child(9) { left: 90%; background: #ef4444; animation: confettiFall 1.8s ease forwards 2.4s; }
+    .confetti:nth-child(10) { left: 15%; background: #8b5cf6; border-radius: 50%; animation: confettiFall 1.5s ease forwards 2.6s; }
+    .confetti:nth-child(11) { left: 35%; background: #2563eb; animation: confettiFall 1.7s ease forwards 2.2s; }
+    .confetti:nth-child(12) { left: 55%; background: #059669; border-radius: 50%; animation: confettiFall 1.4s ease forwards 2.5s; }
+    .confetti:nth-child(13) { left: 75%; background: #f59e0b; animation: confettiFall 1.6s ease forwards 2.3s; }
+    .confetti:nth-child(14) { left: 85%; background: #8b5cf6; border-radius: 50%; animation: confettiFall 1.5s ease forwards 2.1s; }
+
+    @keyframes confettiFall {
+      0% {
+        opacity: 1;
+        transform: translateY(-20px) rotate(0deg) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(320px) rotate(720deg) scale(0.5);
+      }
+    }
+
+    /* Sparkles */
+    .sparkle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: #fbbf24;
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      opacity: 0;
+    }
+
+    .sparkle:nth-child(1) { top: 20%; left: 15%; animation: sparkle 0.6s ease forwards 2.3s; }
+    .sparkle:nth-child(2) { top: 15%; right: 20%; animation: sparkle 0.6s ease forwards 2.5s; }
+    .sparkle:nth-child(3) { top: 40%; left: 10%; animation: sparkle 0.6s ease forwards 2.4s; }
+    .sparkle:nth-child(4) { top: 35%; right: 15%; animation: sparkle 0.6s ease forwards 2.6s; }
+
+    @keyframes sparkle {
+      0% { opacity: 0; transform: scale(0) rotate(0deg); }
+      50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+      100% { opacity: 0; transform: scale(0) rotate(360deg); }
+    }
+
+    /* Entrance animation */
+    .envelope {
+      opacity: 0;
+      animation: envelopeArrive 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.2s;
+    }
+
+    @keyframes envelopeArrive {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -150%) scale(0.3) rotate(-15deg);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+      }
+    }
+
+    /* Text Content */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+      border: 1px solid #86efac;
+      padding: 8px 16px;
+      border-radius: 50px;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 2.4s;
+    }
+
+    .badge svg {
+      width: 16px;
+      height: 16px;
+      stroke: #059669;
+      stroke-width: 2.5;
+      fill: none;
+    }
+
+    .badge-text {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #059669;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #111827;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 2.5s;
+    }
+
+    h1 span {
+      color: #2563eb;
+    }
+
+    .subtitle {
+      font-size: 1.15rem;
+      color: #6b7280;
+      margin-bottom: 32px;
+      max-width: 450px;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 2.6s;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 2.7s;
+      transition: gap 0.2s ease;
+    }
+
+    .back-link:hover {
+      gap: 12px;
+    }
+
+    .back-link svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    @keyframes fadeUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Footer */
+    .footer {
+      padding: 24px 60px;
+      text-align: center;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .footer-text {
+      font-size: 0.85rem;
+      color: #9ca3af;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .nav {
+        padding: 16px 24px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .animation-container {
+        width: 280px;
+        height: 280px;
+      }
+
+      .envelope {
+        transform: translate(-50%, -50%) scale(0.65);
+      }
+
+      @keyframes envelopeArrive {
+        0% {
+          opacity: 0;
+          transform: translate(-50%, -150%) scale(0.25) rotate(-15deg);
+        }
+        100% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(0.65) rotate(0deg);
+        }
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="logo">BillScan<span>_</span></a>
+  </nav>
+
+  <main class="main">
+    <div class="container">
+      <div class="animation-container">
+        <!-- Confetti -->
+        <div class="confetti-container">
+          <div class="confetti"></div>
+          <div class="confetti"></div>
+          <div class="confetti"></div>
+          <div class="confetti"></div>
+          <div class="confetti"></div>
+          <div class="confetti"></div>
+          <div class="confetti"></div>
+          <div class="confetti"></div>
+          <div class="confetti"></div>
+          <div class="confetti"></div>
+          <div class="confetti"></div>
+          <div class="confetti"></div>
+          <div class="confetti"></div>
+          <div class="confetti"></div>
+        </div>
+
+        <!-- Sparkles -->
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+
+        <!-- Envelope -->
+        <div class="envelope">
+          <div class="envelope-flap">
+            <div class="envelope-flap-inner"></div>
+          </div>
+          <div class="envelope-body"></div>
+          <div class="letter">
+            <div class="letter-check">
+              <svg viewBox="0 0 24 24">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <div class="letter-text">You're in!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="badge">
+        <svg viewBox="0 0 24 24">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        <span class="badge-text">Confirmed</span>
+      </div>
+
+      <h1>You're on the <span>waitlist!</span></h1>
+      <p class="subtitle">We'll send you an email when BillScan is ready. Get ready to stop overpaying on medical bills.</p>
+
+      <a href="index.html" class="back-link">
+        <svg viewBox="0 0 24 24">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Back to homepage
+      </a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p class="footer-text">2024 BillScan. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

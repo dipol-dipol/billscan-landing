@@ -2277,11 +2277,7 @@
         });
 
         if (response.ok) {
-          waitlistEmail.value = '';
-          waitlistBtn.textContent = 'You\'re in!';
-          waitlistBtn.style.background = '#059669';
-          formNote.textContent = 'We\'ll email you when BillScan is ready.';
-          formNote.style.color = '#059669';
+          window.location.href = 'confirmed.html';
         } else if (response.status === 409) {
           waitlistBtn.textContent = 'Already signed up!';
           waitlistBtn.style.background = '#6b7280';
