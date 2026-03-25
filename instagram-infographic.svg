@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+  <!-- Background -->
+  <rect width="1080" height="1080" fill="#ffffff"/>
+
+  <!-- Logo top left -->
+  <text x="80" y="80" font-family="Inter, -apple-system, sans-serif" font-size="24" font-weight="600" fill="#111827">
+    BillScan<tspan fill="#2563eb">_</tspan>
+  </text>
+
+  <!-- Opening hook -->
+  <text x="80" y="200" font-family="Inter, -apple-system, sans-serif" font-size="44" font-weight="800" fill="#111827">
+    You got a $4,000 hospital bill.
+  </text>
+  <text x="80" y="260" font-family="Inter, -apple-system, sans-serif" font-size="44" font-weight="800" fill="#111827">
+    You paid it.
+  </text>
+  <text x="80" y="320" font-family="Inter, -apple-system, sans-serif" font-size="44" font-weight="800" fill="#dc2626">
+    It was wrong.
+  </text>
+
+  <!-- The twist -->
+  <text x="80" y="420" font-family="Inter, -apple-system, sans-serif" font-size="26" fill="#374151">
+    80% of medical bills have errors. Not typos.
+  </text>
+  <text x="80" y="460" font-family="Inter, -apple-system, sans-serif" font-size="26" fill="#374151">
+    Charges for things that never happened.
+  </text>
+  <text x="80" y="500" font-family="Inter, -apple-system, sans-serif" font-size="26" fill="#374151">
+    Procedures billed at 3x the real cost.
+  </text>
+  <text x="80" y="540" font-family="Inter, -apple-system, sans-serif" font-size="26" fill="#374151">
+    The same IV bag charged twice.
+  </text>
+
+  <!-- Why it persists -->
+  <text x="80" y="640" font-family="Inter, -apple-system, sans-serif" font-size="26" font-weight="600" fill="#111827">
+    Why does this keep happening?
+  </text>
+  <text x="80" y="700" font-family="Inter, -apple-system, sans-serif" font-size="26" fill="#374151">
+    Because the bills are unreadable.
+  </text>
+  <text x="80" y="745" font-family="Inter, -apple-system, sans-serif" font-size="26" fill="#374151">
+    Because disputing feels impossible.
+  </text>
+  <text x="80" y="790" font-family="Inter, -apple-system, sans-serif" font-size="26" fill="#374151">
+    Because they're counting on you giving up.
+  </text>
+
+  <!-- Bottom line -->
+  <rect x="0" y="880" width="1080" height="200" fill="#111827"/>
+  <text x="540" y="960" font-family="Inter, -apple-system, sans-serif" font-size="36" font-weight="700" fill="#ffffff" text-anchor="middle">
+    Americans lose $210 billion a year
+  </text>
+  <text x="540" y="1010" font-family="Inter, -apple-system, sans-serif" font-size="36" font-weight="700" fill="#ffffff" text-anchor="middle">
+    to billing errors they never catch.
+  </text>
+</svg>

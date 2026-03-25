@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scene 1 — Counter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-family: 'Inter', -apple-system, sans-serif;
+    }
+
+    .label {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #2563eb;
+      margin-bottom: 24px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .label.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .counter {
+      font-weight: 800;
+      font-size: 140px;
+      color: #111827;
+      display: flex;
+      align-items: baseline;
+      letter-spacing: -0.03em;
+    }
+
+    .dollar {
+      font-size: 100px;
+      color: #111827;
+      margin-right: 4px;
+    }
+
+    .digit-wrapper {
+      height: 160px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .digit-column {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .digit {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .suffix {
+      font-size: 100px;
+      margin-left: 4px;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .suffix.show {
+      opacity: 1;
+    }
+
+    .counter.final {
+      color: #dc2626;
+    }
+
+    .counter.final .dollar,
+    .counter.final .suffix {
+      color: #dc2626;
+    }
+
+    .subtext {
+      font-size: 20px;
+      font-weight: 500;
+      color: #6b7280;
+      margin-top: 32px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .subtext.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .replay-hint {
+      position: fixed;
+      bottom: 40px;
+      color: #9ca3af;
+      font-size: 13px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .replay-hint.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="label" id="label">Lost to billing errors annually</div>
+
+  <div class="counter" id="counter">
+    <span class="dollar">$</span>
+    <div class="digit-wrapper">
+      <div class="digit-column" id="d1">
+        <div class="digit">0</div>
+      </div>
+    </div>
+    <div class="digit-wrapper">
+      <div class="digit-column" id="d2">
+        <div class="digit">0</div>
+      </div>
+    </div>
+    <div class="digit-wrapper">
+      <div class="digit-column" id="d3">
+        <div class="digit">0</div>
+      </div>
+    </div>
+    <span class="suffix" id="suffix">B+</span>
+  </div>
+
+  <div class="subtext" id="subtext">in the United States alone</div>
+
+  <div class="replay-hint" id="replayHint">Click to replay</div>
+
+  <script>
+    const counter = document.getElementById('counter');
+    const label = document.getElementById('label');
+    const suffix = document.getElementById('suffix');
+    const subtext = document.getElementById('subtext');
+    const replayHint = document.getElementById('replayHint');
+    const d1 = document.getElementById('d1');
+    const d2 = document.getElementById('d2');
+    const d3 = document.getElementById('d3');
+
+    function buildColumn(element, finalDigit, spins) {
+      element.innerHTML = '';
+      const totalDigits = spins * 10 + finalDigit + 1;
+      for (let i = 0; i <= totalDigits; i++) {
+        const div = document.createElement('div');
+        div.className = 'digit';
+        div.textContent = i % 10;
+        element.appendChild(div);
+      }
+    }
+
+    function resetAnimation() {
+      counter.classList.remove('final');
+      label.classList.remove('show');
+      suffix.classList.remove('show');
+      subtext.classList.remove('show');
+      replayHint.classList.remove('show');
+
+      d1.style.transition = 'none';
+      d2.style.transition = 'none';
+      d3.style.transition = 'none';
+      d1.style.transform = 'translateY(0)';
+      d2.style.transform = 'translateY(0)';
+      d3.style.transform = 'translateY(0)';
+
+      buildColumn(d1, 2, 5);
+      buildColumn(d2, 1, 4);
+      buildColumn(d3, 0, 3);
+
+      void d1.offsetWidth;
+
+      setTimeout(runAnimation, 100);
+    }
+
+    function runAnimation() {
+      const duration = 2000;
+      const digitHeight = 160;
+
+      // Show label first
+      label.classList.add('show');
+
+      // Start spinning after label appears
+      setTimeout(() => {
+        const d1Final = (5 * 10 + 2) * digitHeight;
+        const d2Final = (4 * 10 + 1) * digitHeight;
+        const d3Final = (3 * 10 + 0) * digitHeight;
+
+        d1.style.transition = `transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1)`;
+        d2.style.transition = `transform ${duration - 150}ms cubic-bezier(0.16, 1, 0.3, 1)`;
+        d3.style.transition = `transform ${duration - 300}ms cubic-bezier(0.16, 1, 0.3, 1)`;
+
+        d1.style.transform = `translateY(-${d1Final}px)`;
+        d2.style.transform = `translateY(-${d2Final}px)`;
+        d3.style.transform = `translateY(-${d3Final}px)`;
+
+        // Show suffix and turn red on complete
+        setTimeout(() => {
+          counter.classList.add('final');
+          suffix.classList.add('show');
+        }, duration);
+
+        // Show subtext
+        setTimeout(() => {
+          subtext.classList.add('show');
+        }, duration + 400);
+
+        // Show replay hint
+        setTimeout(() => {
+          replayHint.classList.add('show');
+        }, duration + 1500);
+
+      }, 600);
+    }
+
+    setTimeout(resetAnimation, 300);
+
+    document.body.addEventListener('click', resetAnimation);
+  </script>
+
+</body>
+</html>
