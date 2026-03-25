@@ -1969,11 +1969,11 @@
     <h2 class="section-title">Stop overpaying. Start disputing.</h2>
     <p class="section-subtitle">Join the waitlist for early access and a launch discount. No spam, just one email when we're ready.</p>
 
-    <form class="waitlist-form" action="https://formspree.io/f/xgopekaz" method="POST">
-      <input type="email" name="email" placeholder="you@example.com" required>
-      <button type="submit" class="btn-primary">Join Waitlist</button>
+    <form class="waitlist-form" id="waitlistForm">
+      <input type="email" name="email" id="waitlistEmail" placeholder="you@example.com" required>
+      <button type="submit" class="btn-primary" id="waitlistBtn">Join Waitlist</button>
     </form>
-    <p class="form-note">Your email is only used for launch updates. No spam.</p>
+    <p class="form-note" id="formNote">Your email is only used for launch updates. No spam.</p>
   </section>
 
   <!-- Footer -->
@@ -2245,6 +2245,64 @@
     }, { threshold: 0.5 });
 
     statNumbers.forEach(stat => statObserver.observe(stat));
+
+    // Supabase waitlist form
+    const SUPABASE_URL = 'https://bsooywuaxoyfixwxcsxh.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzb295d3VheG95Zml4d3hjc3hoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NzQxODQsImV4cCI6MjA5MDA1MDE4NH0.8V08_PMS0mt3LrIHPgIw7-WRpFCJoByyWuy1C60XBUw';
+
+    const waitlistForm = document.getElementById('waitlistForm');
+    const waitlistEmail = document.getElementById('waitlistEmail');
+    const waitlistBtn = document.getElementById('waitlistBtn');
+    const formNote = document.getElementById('formNote');
+
+    waitlistForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = waitlistEmail.value.trim();
+      if (!email) return;
+
+      waitlistBtn.disabled = true;
+      waitlistBtn.textContent = 'Joining...';
+
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ email })
+        });
+
+        if (response.ok) {
+          waitlistEmail.value = '';
+          waitlistBtn.textContent = 'You\'re in!';
+          waitlistBtn.style.background = '#059669';
+          formNote.textContent = 'We\'ll email you when BillScan is ready.';
+          formNote.style.color = '#059669';
+        } else if (response.status === 409) {
+          waitlistBtn.textContent = 'Already signed up!';
+          waitlistBtn.style.background = '#6b7280';
+          formNote.textContent = 'This email is already on the waitlist.';
+        } else {
+          throw new Error('Failed to submit');
+        }
+      } catch (err) {
+        waitlistBtn.textContent = 'Try again';
+        waitlistBtn.style.background = '#dc2626';
+        formNote.textContent = 'Something went wrong. Please try again.';
+        formNote.style.color = '#dc2626';
+        setTimeout(() => {
+          waitlistBtn.disabled = false;
+          waitlistBtn.textContent = 'Join Waitlist';
+          waitlistBtn.style.background = '#2563eb';
+          formNote.textContent = 'Your email is only used for launch updates. No spam.';
+          formNote.style.color = '#9ca3af';
+        }, 3000);
+      }
+    });
 
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
