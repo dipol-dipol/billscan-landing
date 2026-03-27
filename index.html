@@ -1432,9 +1432,9 @@
     @media (max-width: 1100px) {
       .hero {
         grid-template-columns: 1fr;
-        gap: 80px;
+        gap: 40px;
         text-align: center;
-        padding: 120px 40px 80px;
+        padding: 100px 32px 60px;
       }
 
       .hero-text p {
@@ -1451,6 +1451,7 @@
 
       .animation-container {
         transform: scale(0.85);
+        height: 500px;
       }
 
       .error-tag {
@@ -1460,45 +1461,206 @@
       .problem-grid,
       .trust-grid {
         grid-template-columns: 1fr;
-        gap: 40px;
+        gap: 32px;
       }
 
       section {
-        padding: 80px 40px;
+        padding: 64px 32px;
+      }
+
+      .cta-section {
+        padding: 80px 32px;
       }
 
       .nav {
-        padding: 16px 24px;
+        padding: 14px 20px;
       }
     }
 
     @media (max-width: 600px) {
+      .hero {
+        gap: 24px;
+        padding: 88px 20px 40px;
+        min-height: auto;
+      }
+
       .hero-text h1 {
-        font-size: 2.2rem;
+        font-size: 2rem;
+        margin-bottom: 20px;
+      }
+
+      .hero-text p {
+        font-size: 1rem;
+        margin-bottom: 24px;
+      }
+
+      .stat-row {
+        margin-bottom: 28px;
+      }
+
+      .stat-pill {
+        font-size: 0.85rem;
+      }
+
+      .btn-primary {
+        padding: 16px 28px;
+        font-size: 0.95rem;
+        width: 100%;
+        text-align: center;
+      }
+
+      .cta-group {
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+      }
+
+      .animation-container {
+        transform: scale(0.72);
+        transform-origin: top center;
+        height: 420px;
+        margin-top: -20px;
+      }
+
+      .section-label {
+        font-size: 0.75rem;
       }
 
       .section-title {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
+        margin-bottom: 14px;
+      }
+
+      .section-subtitle {
+        font-size: 1rem;
+      }
+
+      section {
+        padding: 48px 20px;
+      }
+
+      .problem-content p {
+        font-size: 1rem;
+        line-height: 1.7;
+      }
+
+      .problem-grid {
+        margin-top: 32px;
+        gap: 24px;
+      }
+
+      .stat-block {
+        padding: 20px 24px;
+      }
+
+      .stat-block .number {
+        font-size: 2rem;
       }
 
       .step {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 16px;
+        padding: 28px 0;
+      }
+
+      .step-number {
+        width: 44px;
+        height: 44px;
+        font-size: 1.1rem;
+      }
+
+      .step-content h3 {
+        font-size: 1.15rem;
+      }
+
+      .step-content p {
+        font-size: 0.95rem;
+      }
+
+      .trust-card {
+        padding: 24px;
+      }
+
+      .trust-card h3 {
+        font-size: 1.05rem;
+      }
+
+      .trust-card p {
+        font-size: 0.9rem;
+      }
+
+      .faq-item h3 {
+        font-size: 1.05rem;
+      }
+
+      .faq-item p {
+        font-size: 0.9rem;
+      }
+
+      .cta-section {
+        padding: 64px 20px;
+      }
+
+      .cta-section .section-title {
+        font-size: 1.8rem;
+      }
+
+      .cta-section .section-subtitle {
+        font-size: 0.95rem;
+        margin: 0 auto 32px;
       }
 
       .waitlist-form {
         flex-direction: column;
       }
 
+      .waitlist-form input {
+        padding: 16px 20px;
+      }
+
+      .waitlist-form button {
+        padding: 16px 24px;
+        width: 100%;
+      }
+
       .footer {
         flex-direction: column;
-        gap: 24px;
+        gap: 20px;
         text-align: center;
+        padding: 32px 20px;
       }
 
       .footer-left {
         flex-direction: column;
-        gap: 16px;
+        gap: 12px;
+      }
+
+      .nav {
+        padding: 12px 16px;
+      }
+
+      .nav-cta {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .hero-text h1 {
+        font-size: 1.7rem;
+      }
+
+      .animation-container {
+        transform: scale(0.62);
+        height: 360px;
+      }
+
+      .section-title {
+        font-size: 1.4rem;
+      }
+
+      .cta-section .section-title {
+        font-size: 1.5rem;
       }
     }
 
